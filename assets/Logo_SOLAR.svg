@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1366" height="768" viewBox="0 0 1366 768">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #ffa07e;
+      }
+
+      .cls-2 {
+        fill-rule: evenodd;
+      }
+
+      .cls-3 {
+        font-size: 800px;
+      }
+
+      .cls-3, .cls-4 {
+        fill: #252723;
+        font-family: "Roboto Slab";
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        font-size: 600px;
+      }
+    </style>
+  </defs>
+  <g id="Artboard_1" data-name="Artboard 1">
+    <g>
+      <g>
+        <circle class="cls-1" cx="565.344" cy="409.813" r="105.625"/>
+        <path id="Polygon_1" data-name="Polygon 1" class="cls-2" d="M517.025,287.287l54.669-71.958,35.7,72.645Z"/>
+        <path id="Polygon_1_copy" data-name="Polygon 1 copy" class="cls-2" d="M613.287,283.716l89.9-9.159L674.463,350.23Z"/>
+        <path id="Polygon_1_copy_2" data-name="Polygon 1 copy 2" class="cls-2" d="M686.436,348.616l72.644,53.752-72.188,36.616Z"/>
+        <path id="Polygon_1_copy_3" data-name="Polygon 1 copy 3" class="cls-2" d="M636.649,503.622L701.6,440.786l24.269,77.219Z"/>
+        <path id="Polygon_1_copy_4" data-name="Polygon 1 copy 4" class="cls-2" d="M550.906,531.526l89.244-14.213-24.415,77.172Z"/>
+        <path id="Polygon_1_copy_5" data-name="Polygon 1 copy 5" class="cls-2" d="M465.319,584.843l15.4-89.048,65.138,48.05Z"/>
+        <path id="Polygon_1_copy_6" data-name="Polygon 1 copy 6" class="cls-2" d="M380.742,488.461L446,425.951l23.883,77.339Z"/>
+        <path id="Polygon_1_copy_7" data-name="Polygon 1 copy 7" class="cls-2" d="M364.052,372.9l84.82-31.182-9.052,80.435Z"/>
+        <path id="Polygon_1_copy_8" data-name="Polygon 1 copy 8" class="cls-2" d="M441.46,244.7l72.8,53.542-72.081,36.825Z"/>
+      </g>
+      <text id="S" class="cls-3" transform="translate(-19.834 588.889) scale(0.819)">S</text>
+      <text id="lar" class="cls-4" transform="translate(727.816 590.703) scale(0.819)">lar</text>
+    </g>
+  </g>
+</svg>
