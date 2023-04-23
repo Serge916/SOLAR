@@ -1,12 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
 import { View,
          StyleSheet,
-         TouchableOpacity } from "react-native";
-import {Route, Switch} from "react-router-native";
+         TouchableOpacity,
+         Alert } from "react-native";
+import { Link } from "react-router-native";
 
 import theme from "../theme";
 
-import {ProfileIcon, ChartIcon, WebIcon, SettingsIcon, CalendarIcon} from "./Icons";
+import {ProfileIcon, ChartIcon, WebIcon, SettingsIcon, CalendarIcon, HomeIcon} from "./Icons";
+import StyledText from "./StyledText";
+
 
 const styles = StyleSheet.create({
     container:{
@@ -46,7 +49,8 @@ const styles = StyleSheet.create({
     icon: {
         height: 75,
         margin: 10,
-        marginBottom: 50
+        marginBottom: 50,
+        borderRadius: 5
     }
 })
 
@@ -60,19 +64,19 @@ export default function Menu({children, style, show}){
         <View style={menuStyles}>
             {children}
         <View style={styles.box}>
-            <TouchableOpacity style={styles.icon} onPress={() => alert("Profile")}>
-                <ProfileIcon />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={() => alert("Profile")}>
+            <Link to={'/'} style={styles.icon} underlayColor={'#00000009'}>
+                <HomeIcon />
+            </Link>
+            <Link to={'/prueba'} style={styles.icon} underlayColor={'#00000009'}>
                 <ChartIcon />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={() => alert("Profile")}>
+            </Link>
+            <TouchableOpacity style={styles.icon} onPress={() => Alert.alert("Not Implemented")}>
                 <CalendarIcon />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={() => alert("Profile")}>
+            <TouchableOpacity style={styles.icon} onPress={() => Alert.alert("Not implemented")}>
                 <SettingsIcon />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={() => alert("Profile")}>
+            <TouchableOpacity style={styles.icon} onPress={() => Alert.alert("Not implemented")}>
                 <WebIcon />
             </TouchableOpacity>
         </View>

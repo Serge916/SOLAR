@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import {ProfileVector, ChartVector, WebVector, GearVector, CalendarVector} from "./IconVectors";
+import {ProfileVector, ChartVector, WebVector, GearVector, CalendarVector, HomeVector} from "./IconVectors";
 
 import StyledText from "./StyledText";
 import theme from "../theme";
@@ -91,11 +91,26 @@ function CalendarIcon(){
     )
 }
 
+function HomeIcon(){
+    
+    return(
+        <View style={styles.container}>
+            <View style={styles.icon}>
+                <HomeVector/>
+            </View>
+            <StyledText bold style={{color: theme.colors.secondary}}>
+                Home
+            </StyledText>
+        </View>
+    )
+}
+
 
 export {
     ProfileIcon,
     ChartIcon,
     WebIcon,
     SettingsIcon,
-    CalendarIcon
+    CalendarIcon,
+    HomeIcon
 }

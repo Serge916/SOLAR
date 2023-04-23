@@ -71,6 +71,21 @@ const CalendarVector = (props) => (
   </Svg>
 )
 
+const HomeVector = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"   preserveAspectRatio="xMidYMid meet" viewBox="0 0 150 150" width={75} height={75} style={{overflow: 'visible'}} {...props}    >
+    <Path
+      fill={theme.colors.accent}
+      stroke={theme.colors.accent}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      scale={6.7}
+      d="M6.5 20v-9H3l9-6 9 6h-3.5v9h-3v-3.5A1.5 1.5 0 0 0 13 15h-2a1.5 1.5 0 0 0-1.5 1.5V20h-3Z"
+    />
+  </Svg>
+)
+
 
 
   
@@ -80,5 +95,6 @@ const CalendarVector = (props) => (
     ProfileVector,
     WebVector,
     GearVector,
-    CalendarVector
+    CalendarVector,
+    HomeVector
   }

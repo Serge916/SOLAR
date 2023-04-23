@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function (){
+export default function Display({value}){
 
     return(
         <View style={styles.container}>
@@ -36,7 +36,7 @@ export default function (){
                 Index: 
             </StyledText>
             <StyledText header style={{color: theme.colors.black}} >
-                4.7
+                {value}
             </StyledText>
         </View>
     );
