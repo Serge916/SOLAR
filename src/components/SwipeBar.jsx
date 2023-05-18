@@ -6,6 +6,7 @@ import theme from "../theme";
 
 const styles = StyleSheet.create({
     arrowUp: {
+
         transform: [{rotate: '-90deg'}],
         color: theme.colors.secondary,
         borderColor: theme.colors.secondary,

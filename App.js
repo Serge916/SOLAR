@@ -1,17 +1,18 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Alert, Button, StyleSheet, Text, View } from 'react-native';
 import Main from './src/components/Main';
 import { NativeRouter, Route, Routes } from 'react-router-native';
+import { useState } from 'react';
 
-import StyledText from './src/components/StyledText';
-import Prueba from './src/components/Prueba';
+import { BleManager } from 'react-native-ble-plx';
+import { Button } from 'react-native';
 
-const Point = () => <StyledText>Hello!</StyledText>;
+import useBLE from './useBle';
 
 
 export default function App() {
+
   return (
+    
     <NativeRouter>
       <Main/>
     </NativeRouter>

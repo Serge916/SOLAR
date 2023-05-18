@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Dimensions } from "react-native";
 import StyledText from "./StyledText";
 import Menu from "./Menu";
 import SwipeBar from "./SwipeBar";
 
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
-    hide: {
-        opacity: 0
-    },
-    show: {
-        opacity: 1,
+
+    bottomPosition: {
+        position: 'absolute',
         alignSelf: 'center',
-        top: '90%',
+        top: '90%'
 
         
     },
@@ -35,18 +36,26 @@ export default function NavBar(){
     const [menuState, changeMenu] = useState(0)
 
 return(
-    <View style={{flex:1, position: "absolute", width: '100%', height: '100%'}}>
-        <TouchableOpacity activeOpacity={menuState ? 0 : 0.5} style={menuState ? styles.hide : styles.show} onPress={() => ( !menuState && changeMenu(1)) }>
-            <SwipeBar/>
-        </TouchableOpacity>
-
-        <Menu show={menuState ? 1: 0}>
-            <TouchableOpacity onPress={() => (menuState && changeMenu(0))}>
-                <StyledText large bold style={styles.arrowUp}>
-                    &gt;
-                </StyledText>
+    <>
+    {menuState ? (
+        <View style={{flex:1, position: "absolute", width: '100%', height: '100%'}}>
+            <Menu show>
+                <TouchableOpacity onPress={() => (changeMenu(0))}>
+                    <StyledText large bold style={styles.arrowUp}>
+                        &gt;
+                    </StyledText>
+                </TouchableOpacity>
+            </Menu>
+        </View>
+        
+        ) : (
+        <View style={styles.bottomPosition}>
+            <TouchableOpacity  onPress={() => ( changeMenu(1)) }>
+                <SwipeBar/>
             </TouchableOpacity>
-        </Menu>
-    </View>
+        </View>
+            
+        )}
+    </>
     )    
 }

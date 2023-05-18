@@ -1,10 +1,8 @@
 import React, {useState} from "react";
-import { Alert,
+import { StyleSheet,
+         View,
         Button,
-        StyleSheet,
-        Text,
-        View,
-        TouchableOpacity } from 'react-native';
+        Alert } from 'react-native';
 
 
 import Constants from 'expo-constants'
@@ -30,12 +28,6 @@ const styles = StyleSheet.create({
     header: {
         position: 'relative',
         top: 50,
-    },
-    hide: {
-        opacity: 0
-    },
-    show: {
-        opacity: 1
     },
     arrowUp: {
         transform: [{rotate: '90deg'}],

@@ -1,14 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { View,
-         StyleSheet,
-         TouchableOpacity,
-         Alert } from "react-native";
+         StyleSheet } from "react-native";
 import { Link } from "react-router-native";
 
 import theme from "../theme";
 
-import {ProfileIcon, ChartIcon, WebIcon, SettingsIcon, CalendarIcon, HomeIcon} from "./Icons";
-import StyledText from "./StyledText";
+import { ChartIcon, WebIcon, SettingsIcon, CalendarIcon, HomeIcon} from "./Icons";
 
 
 const styles = StyleSheet.create({
@@ -67,18 +64,18 @@ export default function Menu({children, style, show}){
             <Link to={'/'} style={styles.icon} underlayColor={'#00000009'}>
                 <HomeIcon />
             </Link>
-            <Link to={'/prueba'} style={styles.icon} underlayColor={'#00000009'}>
+            <Link to={'/week'} style={styles.icon} underlayColor={'#00000009'}>
                 <ChartIcon />
             </Link>
-            <TouchableOpacity style={styles.icon} onPress={() => Alert.alert("Not Implemented")}>
+            <Link to={'/prueba'} style={styles.icon} underlayColor={'#00000009'}>
                 <CalendarIcon />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={() => Alert.alert("Not implemented")}>
+            </Link>
+            <Link to={'/settings'} style={styles.icon} underlayColor={'#00000009'}>
                 <SettingsIcon />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={() => Alert.alert("Not implemented")}>
+            </Link>
+            <Link to={'/prueba'} style={styles.icon} underlayColor={'#00000009'}>
                 <WebIcon />
-            </TouchableOpacity>
+            </Link>
         </View>
         </View>
     )
