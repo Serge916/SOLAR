@@ -15,6 +15,9 @@ import base64 from "react-native-base64";
 const HEART_RATE_UUID = "0000180d-0000-1000-8000-00805f9b34fb";
 const HEART_RATE_CHARACTERISTIC = "00002a37-0000-1000-8000-00805f9b34fb";
 
+const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"; // UART service UUID
+const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+const CHARACTERISTIC_UUID_TX = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
 
 function useBLE() {
   const bleManager = useMemo(() => new BleManager(), []);
@@ -86,7 +89,8 @@ function useBLE() {
       if (error) {
         console.log(error);
       }
-      if (device /* && device.name?.includes("UART Service") */) {    //Checks for "CorSense". Gotta change it
+      if (device && device.name?.includes("UART Service")) {
+        //Checks for "CorSense". Gotta change it
         setAllDevices((prevState) => {
           if (!isDuplicteDevice(prevState, device)) {
             return [...prevState, device];
@@ -116,10 +120,7 @@ function useBLE() {
     }
   };
 
-  const onHeartRateUpdate = (
-    error,
-    characteristic
-  ) => {
+  const onHeartRateUpdate = (error, characteristic) => {
     if (error) {
       console.log(error);
       return -1;
@@ -147,8 +148,8 @@ function useBLE() {
   const startStreamingData = async (device) => {
     if (device) {
       device.monitorCharacteristicForService(
-        HEART_RATE_UUID,
-        HEART_RATE_CHARACTERISTIC,
+        SERVICE_UUID,
+        CHARACTERISTIC_UUID_RX,
         onHeartRateUpdate
       );
     } else {
@@ -156,8 +157,8 @@ function useBLE() {
     }
 
     useEffect(() => {
-        openModal()
-    }, [])
+      openModal();
+    }, []);
   };
 
   return {
