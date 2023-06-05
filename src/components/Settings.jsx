@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -7,7 +7,6 @@ import {
   Alert,
   LogBox,
 } from "react-native";
-import { useState } from "react";
 
 import useBLE from "../../useBle";
 import StyledText from "./StyledText";
@@ -47,7 +46,7 @@ export default function Settings() {
     allDevices,
     connectToDevice,
     connectedDevice,
-    heartRate,
+    sensorValue,
     disconnectFromDevice,
   } = useBLE();
 
@@ -73,7 +72,7 @@ export default function Settings() {
     <View style={styles.container}>
       {connectedDevice ? (
         <StyledText bold large>
-          Connected to device!
+          Connected to device! {sensorValue}
         </StyledText>
       ) : (
         <>
@@ -83,7 +82,10 @@ export default function Settings() {
         </>
       )}
 
-      <TouchableOpacity activeOpacity={0.87} onPress={() => openModal()}>
+      <TouchableOpacity
+        activeOpacity={0.87}
+        onPress={() => (connectedDevice ? disconnectFromDevice() : openModal())}
+      >
         <StyledText bold large style={styles.button}>
           {connectedDevice ? "Disconnect from device" : "Scan for devices"}
         </StyledText>

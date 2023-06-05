@@ -93,6 +93,7 @@ export default function DeviceModal({
       animationType="slide"
       transparent={false}
       visible={visible}
+      onRequestClose={closeModal}
     >
       <View style={styles.modalTitle}>
         <StyledText bold style={styles.modalTitleText}>

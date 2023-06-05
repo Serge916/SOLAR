@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { PermissionsAndroid, Platform } from "react-native";
 import {
   BleError,
@@ -15,7 +15,8 @@ import base64 from "react-native-base64";
 const HEART_RATE_UUID = "0000180d-0000-1000-8000-00805f9b34fb";
 const HEART_RATE_CHARACTERISTIC = "00002a37-0000-1000-8000-00805f9b34fb";
 
-const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"; // UART service UUID
+const SERVICE_UUID = "4FAFC201-1FB5-459E-8FCC-C5C9C331914B"; // "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"; // UART service UUID
+const CHARACTERISTIC_CUSTOM = "BEB5483E-36E1-4688-B7F5-EA07361B26A8";
 const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
 const CHARACTERISTIC_UUID_TX = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
 
@@ -23,7 +24,7 @@ function useBLE() {
   const bleManager = useMemo(() => new BleManager(), []);
   const [allDevices, setAllDevices] = useState([]);
   const [connectedDevice, setConnectedDevice] = useState(null);
-  const [heartRate, setHeartRate] = useState(0);
+  const [sensorValue, setSensorValue] = useState(0);
 
   const requestAndroid31Permissions = async () => {
     const bluetoothScanPermission = await PermissionsAndroid.request(
@@ -89,8 +90,7 @@ function useBLE() {
       if (error) {
         console.log(error);
       }
-      if (device && device.name?.includes("UART Service")) {
-        //Checks for "CorSense". Gotta change it
+      if (device && device.name?.includes("SOLAR")) {
         setAllDevices((prevState) => {
           if (!isDuplicteDevice(prevState, device)) {
             return [...prevState, device];
@@ -116,41 +116,32 @@ function useBLE() {
     if (connectedDevice) {
       bleManager.cancelDeviceConnection(connectedDevice.id);
       setConnectedDevice(null);
-      setHeartRate(0);
+      setSensorValue(0);
     }
   };
 
-  const onHeartRateUpdate = (error, characteristic) => {
+  const onReadingUpdate = (error, characteristic) => {
     if (error) {
       console.log(error);
       return -1;
     } else if (!characteristic?.value) {
-      console.log("No Data was recieved");
+      console.log("No Data was received");
       return -1;
     }
 
     const rawData = base64.decode(characteristic.value);
-    let innerHeartRate = -1;
+    const decodedData = rawData.charCodeAt(0);
+    console.log("Received data: " + decodedData);
 
-    const firstBitValue = Number(rawData) & 0x01;
-
-    if (firstBitValue === 0) {
-      innerHeartRate = rawData[1].charCodeAt(0);
-    } else {
-      innerHeartRate =
-        Number(rawData[1].charCodeAt(0) << 8) +
-        Number(rawData[2].charCodeAt(2));
-    }
-
-    setHeartRate(innerHeartRate);
+    setSensorValue(decodedData);
   };
 
   const startStreamingData = async (device) => {
     if (device) {
       device.monitorCharacteristicForService(
         SERVICE_UUID,
-        CHARACTERISTIC_UUID_RX,
-        onHeartRateUpdate
+        CHARACTERISTIC_CUSTOM,
+        onReadingUpdate
       );
     } else {
       console.log("No Device Connected");
@@ -168,7 +159,7 @@ function useBLE() {
     allDevices,
     connectedDevice,
     disconnectFromDevice,
-    heartRate,
+    sensorValue,
   };
 }
 
