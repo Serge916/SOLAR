@@ -15,7 +15,6 @@ import Display from "./Display";
 import RiskBar from "./RiskBar";
 import Logo from "./Logo";
 
-import useBLE from "../../useBle";
 import StyledText from "./StyledText";
 import DeviceModal from "./DeviceModal";
 
@@ -66,17 +65,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Home() {
-  const {
-    requestPermissions,
-    scanForPeripherals,
-    allDevices,
-    connectToDevice,
-    connectedDevice,
-    sensorValue,
-    disconnectFromDevice,
-  } = useBLE();
-
+export default function Home({ useBLE }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const openModal = async () => {
@@ -90,9 +79,9 @@ export default function Home() {
   };
 
   const scanForDevices = async () => {
-    const isPermissionsEnabled = await requestPermissions();
+    const isPermissionsEnabled = await useBLE.requestPermissions();
     if (isPermissionsEnabled) {
-      scanForPeripherals();
+      useBLE.scanForPeripherals();
     }
   };
   return (
@@ -106,10 +95,13 @@ export default function Home() {
       >
         <Logo />
       </View>
-      {connectedDevice ? (
+      {useBLE.connectedDevice ? (
         <>
-          <Display value={sensorValue} style={styles.secondContainer} />
-          <RiskBar value={sensorValue} />
+          <Display
+            value={Math.round((useBLE.sensorValue * 15) / 0xff)}
+            style={styles.secondContainer}
+          />
+          <RiskBar value={Math.round((useBLE.sensorValue * 15) / 0xff)} />
         </>
       ) : (
         <>
@@ -120,9 +112,9 @@ export default function Home() {
           </TouchableOpacity>
           <DeviceModal
             visible={isModalVisible}
-            devices={allDevices}
+            devices={useBLE.allDevices}
             closeModal={hideModal}
-            connectToPeripheral={connectToDevice}
+            connectToPeripheral={useBLE.connectToDevice}
           />
         </>
       )}

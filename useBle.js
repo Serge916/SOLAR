@@ -62,14 +62,26 @@ function useBLE() {
   const requestPermissions = async () => {
     if (Platform.OS === "android") {
       if ((ExpoDevice.platformApiLevel ?? -1) < 31) {
-        const granted = await PermissionsAndroid.request(
+        const granted = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
             title: "Location Permission",
             message: "Bluetooth Low Energy requires Location",
             buttonPositive: "OK",
-          }
-        );
+          },
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+          {
+            title: "Bluetooth Permission",
+            message: "Needs bluetooth access",
+            buttonPositive: "OK",
+          },
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+          {
+            title: "Bluetooth Permission",
+            message: "Needs bluetooth access",
+            buttonPositive: "OK",
+          },
+        ]);
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } else {
         const isAndroid31PermissionsGranted =
@@ -85,7 +97,8 @@ function useBLE() {
   const isDuplicteDevice = (devices, nextDevice) =>
     devices.findIndex((device) => nextDevice.id === device.id) > -1;
 
-  const scanForPeripherals = () =>
+  const scanForPeripherals = () => {
+    console.log("Scan Called from useBLE!");
     bleManager.startDeviceScan(null, null, (error, device) => {
       if (error) {
         console.log(error);
@@ -99,6 +112,7 @@ function useBLE() {
         });
       }
     });
+  };
 
   const connectToDevice = async (device) => {
     try {
