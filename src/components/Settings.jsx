@@ -1,19 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
+  Alert,
   StyleSheet,
   View,
   TouchableOpacity,
-  Alert,
   LogBox,
 } from "react-native";
 
-import useBLE from "../../useBle";
 import StyledText from "./StyledText";
 import theme from "../theme";
-import DeviceModal from "./DeviceModal";
-
-LogBox.ignoreLogs(["new NativeEventEmitter"]);
 
 const styles = StyleSheet.create({
   container: {
@@ -39,63 +35,55 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Settings() {
-  const {
-    requestPermissions,
-    scanForPeripherals,
-    allDevices,
-    connectToDevice,
-    connectedDevice,
-    sensorValue,
-    disconnectFromDevice,
-  } = useBLE();
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const openModal = async () => {
-    console.log("Scan called!");
-    scanForDevices();
-    setIsModalVisible(true);
-  };
-
-  const hideModal = () => {
-    setIsModalVisible(false);
-  };
-
-  const scanForDevices = async () => {
-    const isPermissionsEnabled = await requestPermissions();
-    if (isPermissionsEnabled) {
-      scanForPeripherals();
+export default function Settings({ useSQLite, useBLE }) {
+  const onEraseConfirmation = (isConfirmed) => {
+    if (isConfirmed) {
+      useSQLite.eraseAllData();
+    } else {
+      console.log("DONT!");
     }
+  };
+  const clearData = () => {
+    Alert.alert(
+      "You sure?",
+      "This will irreversibly erase the data",
+      [
+        { text: "Go ahead", onPress: () => onEraseConfirmation(true) },
+        { text: "NO!", onPress: () => onEraseConfirmation(false) },
+      ],
+      { cancelable: true }
+    );
+  };
+  const onDisconnectConfirmation = (isConfirmed) => {
+    if (isConfirmed) {
+      useBLE.disconnectFromDevice();
+    } else {
+      console.log("DONT!");
+    }
+  };
+  const disconnect = () => {
+    Alert.alert(
+      "You sure?",
+      "This will lose the connection with your SOLAR device",
+      [
+        { text: "Go ahead", onPress: () => onDisconnectConfirmation(true) },
+        { text: "NO!", onPress: () => onDisconnectConfirmation(false) },
+      ],
+      { cancelable: true }
+    );
   };
   return (
     <View style={styles.container}>
-      {connectedDevice ? (
-        <StyledText bold large>
-          Connected to device! {sensorValue}
-        </StyledText>
-      ) : (
-        <>
-          <StyledText bold large>
-            No Solar devices connected
-          </StyledText>
-        </>
-      )}
-
-      <TouchableOpacity
-        activeOpacity={0.87}
-        onPress={() => (connectedDevice ? disconnectFromDevice() : openModal())}
-      >
+      <TouchableOpacity activeOpacity={0.87} onPress={() => clearData()}>
         <StyledText bold large style={styles.button}>
-          {connectedDevice ? "Disconnect from device" : "Scan for devices"}
+          Clear data
         </StyledText>
       </TouchableOpacity>
-      <DeviceModal
-        visible={isModalVisible}
-        devices={allDevices}
-        closeModal={hideModal}
-        connectToPeripheral={connectToDevice}
-      />
+      <TouchableOpacity activeOpacity={0.87} onPress={() => disconnect()}>
+        <StyledText bold large style={styles.button}>
+          Disconnect from Device
+        </StyledText>
+      </TouchableOpacity>
     </View>
   );
 }

@@ -1,12 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  Alert,
-  LogBox,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, LogBox, TouchableOpacity } from "react-native";
 
 import Constants from "expo-constants";
 import theme from "../theme";
