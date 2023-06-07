@@ -14,7 +14,7 @@ import theme from "../theme";
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     flex: 1,
   },
   button: {
@@ -72,6 +72,10 @@ export default function Settings({ useSQLite, useBLE }) {
       { cancelable: true }
     );
   };
+
+  const runSQL = () => {
+    useSQLite.runSQL();
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity activeOpacity={0.87} onPress={() => clearData()}>
@@ -82,6 +86,11 @@ export default function Settings({ useSQLite, useBLE }) {
       <TouchableOpacity activeOpacity={0.87} onPress={() => disconnect()}>
         <StyledText bold large style={styles.button}>
           Disconnect from Device
+        </StyledText>
+      </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.87} onPress={() => runSQL()}>
+        <StyledText bold large style={styles.button}>
+          Run SQLite sentence
         </StyledText>
       </TouchableOpacity>
     </View>

@@ -18,6 +18,9 @@ import Settings from "./Settings";
 
 import useBLE from "../../useBle";
 import useSQLite from "../../useSQLite";
+import SlidingComponents from "./SlidingComponents";
+import AdvisePage from "./AdvisePage";
+import MonthPage from "./MonthPage";
 
 export default function Main() {
   useEffect(() => {
@@ -34,7 +37,8 @@ export default function Main() {
     disconnectFromDevice,
   } = useBLE();
 
-  const { addDayData, fetchData, eraseAllData, dayData } = useSQLite();
+  const { addDayData, fetchData, eraseAllData, dayData, monthData, runSQL } =
+    useSQLite();
 
   useEffect(() => {
     connectedDevice && addDayData(sensorValue) && console.log("Adding value!");
@@ -69,18 +73,24 @@ export default function Main() {
         <Route
           exact
           path="/week"
-          Component={(props) => <DayPage useSQLite={{ dayData }} />}
+          Component={(props) => <SlidingComponents useSQLite={{ dayData }} />}
+        />
+        <Route
+          exact
+          path="/month"
+          Component={(props) => <MonthPage useSQLite={{ monthData }} />}
         />
         <Route
           exact
           path="/settings"
           Component={(props) => (
             <Settings
-              useSQLite={{ eraseAllData }}
+              useSQLite={{ eraseAllData, runSQL }}
               useBLE={{ disconnectFromDevice }}
             />
           )}
         />
+        <Route exact path="/advise" Component={(props) => <AdvisePage />} />
       </Routes>
       <NavBar />
     </View>

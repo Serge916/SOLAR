@@ -134,6 +134,8 @@ function useBLE() {
   const onReadingUpdate = (error, characteristic) => {
     if (error) {
       console.log(error);
+      setConnectedDevice(null);
+      setSensorValue(0);
       return -1;
     } else if (!characteristic?.value) {
       console.log("No Data was received");

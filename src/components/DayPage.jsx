@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet, Alert } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 
 import StyledText from "./StyledText";
@@ -14,17 +14,22 @@ const mockChartData = {
 };
 
 const chartConfig = {
-  backgroundGradientFrom: "#fff",
+  backgroundGradientFrom: "#1E2923",
   backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "#fff",
-  backgroundGradientToOpacity: 0.5,
+  backgroundGradientTo: "#08130D",
+  backgroundGradientToOpacity: 0,
 
-  color: (opacity = 1) => `#023047`,
-  labelColor: (opacity = 1) => `#333`,
-  strokeWidth: 2,
+  color: () => theme.colors.secondary,
+  // labelColor: (opacity = 1) => `#333`,
+  strokeWidth: 3,
 
   useShadowColorFromDataset: false,
   decimalPlaces: 0,
+  propsForDots: {
+    r: "2",
+    strokeWidth: "4",
+    stroke: theme.colors.accent,
+  },
 };
 
 const screenWidth = Dimensions.get("window").width;
@@ -33,11 +38,25 @@ const screenHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    alignContent: "center",
     height: "100%",
+    gap: 60,
+    alignItems: "center",
+    flex: 1,
   },
   titleContainer: {
     alignSelf: "center",
+  },
+  lineContainer: {
+    backgroundColor: `${theme.colors.white}FF`,
+    borderColor: "#0000000F",
+    borderWidth: 1.5,
+    borderRadius: 100,
+    alignItems: "center",
+  },
+  lines: {
+    padding: 15,
+    top: screenHeight * 0.02,
+    right: screenWidth * 0.04,
   },
 });
 
@@ -68,13 +87,15 @@ export default function DayPage({ useSQLite }) {
       <StyledText header bold style={styles.titleContainer}>
         Daily report
       </StyledText>
-      <View>
+      <View style={styles.lineContainer}>
         <LineChart
           data={chartData}
           width={screenWidth}
-          height={220} //CAmbiar por relativo
+          height={screenHeight / 2}
           chartConfig={chartConfig}
-          center={[0, 0]}
+          withInnerLines={false}
+          bezier //Bezier o no??
+          style={styles.lines}
         />
       </View>
     </View>
