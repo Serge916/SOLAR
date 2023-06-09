@@ -18,7 +18,7 @@ export default function SlidingComponents({ useSQLite }) {
         <Pressable onPress={pressAction}>
           {position ? (
             <>
-              <WeekPage />
+              <WeekPage useSQLite={useSQLite} />
             </>
           ) : (
             <>

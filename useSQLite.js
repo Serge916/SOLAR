@@ -78,7 +78,7 @@ function useSQLite() {
       (rightNow - new Date(lastUpdate.data[0].timeStamp * 1000) > 86400000
         ? false
         : true); //Flag indicates if day should be updated
-    //24*60*60*60 ms in a day
+    //24*60*60*1000 ms in a day
     if (!flag) {
       dayData.data.map((day) => {
         totalValue += day.value;
@@ -146,11 +146,17 @@ function useSQLite() {
   const runSQL = () => {
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM day",
-        null,
+        "INSERT INTO month values (?, ?)",
+        [1686129308 * 1000 - 86400000, 250],
         (txObj, { rows: { _array } }) => console.log({ data: _array }),
         (txObj, error) => console.log("Error", error)
       );
+      // tx.executeSql(
+      //   "SELECT * FROM month",
+      //   null,
+      //   (txObj, { rows: { _array } }) => console.log({ data: _array }),
+      //   (txObj, error) => console.log("Error", error)
+      // );
     });
     // console.log(dayData);
   };

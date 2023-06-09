@@ -17,15 +17,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function NumberItem({ dayNumber }) {
+export default function NumberItem({ dayNumber, dayValue }) {
   const [riskColor, setRiskColor] = useState("green");
-  const value = 3;
   useEffect(() => {
-    if (value > 2) {
+    if (dayValue > 300) {
       setRiskColor(theme.colors.highRisk);
-    } else if (value > 1) {
+    } else if (dayValue > 200) {
       setRiskColor(theme.colors.mildRisk);
-    } else if (value > 0) {
+    } else if (dayValue > 100) {
       setRiskColor(theme.colors.lowRisk);
     } else {
       setRiskColor("#00000000");

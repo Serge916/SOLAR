@@ -98,6 +98,9 @@ export default function Home({ useBLE }) {
         </>
       ) : (
         <>
+          <StyledText bold>
+            Connect to a SENSOR device to get real time statistics!
+          </StyledText>
           <TouchableOpacity activeOpacity={0.87} onPress={() => openModal()}>
             <StyledText bold large style={styles.button}>
               Scan for devices

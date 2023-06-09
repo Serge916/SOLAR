@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
 import StyledText from "./StyledText";
 import theme from "../theme";
 
-const barData = {
-  labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const values = [0, 0, 0, 0, 0, 0, 0];
+
+const mockBarData = {
+  labels: labels,
   datasets: [
     {
-      data: [20, 45, 28, 80, 99, 43, 65],
+      data: values,
     },
   ],
 };
@@ -51,7 +54,31 @@ const styles = StyleSheet.create({
   legend: {},
 });
 
-export default function WeekPage() {
+export default function WeekPage({ useSQLite }) {
+  const [barData, setBarData] = useState(mockBarData);
+
+  useEffect(() => {
+    let valueList = [...values];
+    let labelList = [...labels];
+    const rightNow = new Date();
+    for (const [key, value] of Object.entries(useSQLite.monthData.data)) {
+      if (rightNow - value.dayRecord < 604800000) {
+        //ms in a week (7 days)
+        const newDate = new Date(value.dayRecord);
+        valueList[newDate.getDay() - 1] = value.value;
+      }
+    }
+    const newData = {
+      labels: labelList,
+      datasets: [
+        {
+          data: valueList,
+        },
+      ],
+    };
+    setBarData(newData);
+  }, []);
+
   return (
     <View style={styles.barObj}>
       <StyledText header bold style={{}}>

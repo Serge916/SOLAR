@@ -73,7 +73,9 @@ export default function Main() {
         <Route
           exact
           path="/week"
-          Component={(props) => <SlidingComponents useSQLite={{ dayData }} />}
+          Component={(props) => (
+            <SlidingComponents useSQLite={{ dayData, monthData }} />
+          )}
         />
         <Route
           exact

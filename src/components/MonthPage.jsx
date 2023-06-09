@@ -65,13 +65,36 @@ export default function MonthPage({ useSQLite }) {
   const [dayList, setDayList] = useState([]);
   const [currentMonth, setCurrentMonth] = useState("January");
   const [dayNumber, setDayNumber] = useState(31);
+  const [mockList, setMockList] = useState([]);
+
   useEffect(() => {
-    var mockList = [];
+    var newMockList = [];
     for (var i = 0; i < dayNumber; i++) {
-      mockList[i] = { key: i + 1, value: i + 1 };
+      newMockList[i] = { key: i + 1, value: i + 1, indexUV: 0 };
+      console.log("HOLA?", i);
     }
-    setDayList(mockList);
-  }, [dayNumber]);
+    setMockList(newMockList);
+
+    let newList = [...newMockList];
+    console.log("HOLA NEW?", newList);
+    let monthNumber = 0;
+    for (const [key, value] of Object.entries(useSQLite.monthData.data)) {
+      console.log("MOUNTED!", value);
+      const newDate = new Date(value.dayRecord);
+      const dayPointer = newDate.getDate();
+
+      newList[dayPointer - 1] = {
+        key: dayPointer,
+        indexUV: value.value,
+        value: dayPointer,
+      };
+      monthNumber = newDate.getMonth();
+    }
+    setDayList(newList);
+    setCurrentMonth(monthList[monthNumber].name);
+    setDayNumber(monthList[monthNumber].totalDays);
+    console.log("MOUNTED!", currentMonth, dayNumber);
+  }, []);
 
   return (
     <View style={styles.mainContainer}>
@@ -88,8 +111,11 @@ export default function MonthPage({ useSQLite }) {
         <View style={styles.calendar}>
           {dayList.map((day) => {
             return (
-              <View style={styles.numberContainer}>
-                <NumberItem dayNumber={day.value}></NumberItem>
+              <View style={styles.numberContainer} key={day.key}>
+                <NumberItem
+                  dayNumber={day.value}
+                  dayValue={day.indexUV}
+                ></NumberItem>
               </View>
             );
           })}
