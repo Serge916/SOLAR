@@ -53,15 +53,15 @@ export default function RiskBar({ value }) {
     if (value <= 2) {
       setIndex(1);
     } else if (value <= 5) {
-      setIndex(1);
+      setIndex(2);
     } else if (value <= 7) {
-      setIndex(1);
+      setIndex(3);
     } else if (value <= 10) {
-      setIndex(1);
+      setIndex(4);
     } else {
       setIndex(5);
     }
-  });
+  }, [value]);
 
   return (
     <View style={styles.outerContainer}>

@@ -12,12 +12,14 @@ import * as ExpoDevice from "expo-device";
 
 import base64 from "react-native-base64";
 
-const SERVICE_UUID = "4FAFC201-1FB5-459E-8FCC-C5C9C331914B"; // "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"; // UART service UUID
-const CHARACTERISTIC_CUSTOM = "BEB5483E-36E1-4688-B7F5-EA07361B26A8";
+// const SERVICE_UUID = "4FAFC201-1FB5-459E-8FCC-C5C9C331914B";
+const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"; // UART service UUID
+const CHARACTERISTIC_CUSTOM = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+// const CHARACTERISTIC_CUSTOM = "BEB5483E-36E1-4688-B7F5-EA07361B26A8";
 const CHARACTERISTIC_UUID_RX = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
 const CHARACTERISTIC_UUID_TX = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
 
-function useBLE() {
+function useBLE(addDayData) {
   const bleManager = useMemo(() => new BleManager(), []);
   const [allDevices, setAllDevices] = useState([]);
   const [connectedDevice, setConnectedDevice] = useState(null);
@@ -147,6 +149,7 @@ function useBLE() {
     console.log("Received data: " + decodedData);
 
     setSensorValue(decodedData);
+    addDayData(decodedData);
   };
 
   const startStreamingData = async (device) => {

@@ -98,14 +98,23 @@ export default function Home({ useBLE }) {
         </>
       ) : (
         <>
-          <StyledText bold>
-            Connect to a SENSOR device to get real time statistics!
-          </StyledText>
-          <TouchableOpacity activeOpacity={0.87} onPress={() => openModal()}>
-            <StyledText bold large style={styles.button}>
-              Scan for devices
+          <View
+            style={{
+              alignItems: "center",
+            }}
+          >
+            <StyledText bold style={{ fontSize: 19 }}>
+              Connect a SENSOR device
             </StyledText>
-          </TouchableOpacity>
+            <StyledText bold style={{ marginBottom: 20, fontSize: 17 }}>
+              to get real time statistics!
+            </StyledText>
+            <TouchableOpacity activeOpacity={0.87} onPress={() => openModal()}>
+              <StyledText bold large style={styles.button}>
+                Scan for devices
+              </StyledText>
+            </TouchableOpacity>
+          </View>
           <DeviceModal
             visible={isModalVisible}
             devices={useBLE.allDevices}

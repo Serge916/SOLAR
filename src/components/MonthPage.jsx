@@ -71,15 +71,12 @@ export default function MonthPage({ useSQLite }) {
     var newMockList = [];
     for (var i = 0; i < dayNumber; i++) {
       newMockList[i] = { key: i + 1, value: i + 1, indexUV: 0 };
-      console.log("HOLA?", i);
     }
     setMockList(newMockList);
 
     let newList = [...newMockList];
-    console.log("HOLA NEW?", newList);
     let monthNumber = 0;
     for (const [key, value] of Object.entries(useSQLite.monthData.data)) {
-      console.log("MOUNTED!", value);
       const newDate = new Date(value.dayRecord);
       const dayPointer = newDate.getDate();
 
@@ -93,7 +90,6 @@ export default function MonthPage({ useSQLite }) {
     setDayList(newList);
     setCurrentMonth(monthList[monthNumber].name);
     setDayNumber(monthList[monthNumber].totalDays);
-    console.log("MOUNTED!", currentMonth, dayNumber);
   }, []);
 
   return (

@@ -22,19 +22,19 @@ function useSQLite() {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS day (timeRecord INT, value INT);",
         null,
-        (txObj, error) => console.log("Success", error),
+        (txObj, mssg) => console.log("Concerning Day Table:", mssg),
         (txObj, error) => console.log("Error", error)
       );
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS month (dayRecord INT, value INT);",
         null,
-        (txObj, error) => console.log("Success", error),
+        (txObj, mssg) => console.log("Concerning Month Table:", mssg),
         (txObj, error) => console.log("Error", error)
       );
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS updateRecord (timeStamp INT);",
         null,
-        (txObj, error) => console.log("Success", error),
+        (txObj, mssg) => console.log("Concerning updateRecord Table", mssg),
         (txObj, error) => console.log("Error", error)
       );
     });
@@ -70,12 +70,11 @@ function useSQLite() {
   };
 
   const updateMonth = async () => {
-    const rightNow = new Date();
+    const rightNow = Date.now();
     let totalValue = 0;
-
     let flag =
       (lastUpdate.data[0] === undefined ? false : true) &&
-      (rightNow - new Date(lastUpdate.data[0].timeStamp * 1000) > 86400000
+      (rightNow - new Date(lastUpdate.data[0].timeStamp) > 86400000
         ? false
         : true); //Flag indicates if day should be updated
     //24*60*60*1000 ms in a day
@@ -83,7 +82,7 @@ function useSQLite() {
       dayData.data.map((day) => {
         totalValue += day.value;
       });
-      console.log("UPDATING");
+      console.log("UPDATING MONTH");
       db.transaction((tx) => {
         tx.executeSql(
           "INSERT INTO month values (?,?)",
@@ -106,6 +105,12 @@ function useSQLite() {
             setLastUpdate({ data: [{ timeStamp: rightNow.getTime() }] });
             console.log("Success", msg);
           },
+          (txObj, error) => console.log("Error", error)
+        );
+        tx.executeSql(
+          "DELETE FROM day",
+          null,
+          (txObj, msg) => console.log("Successfully erased day table!", msg),
           (txObj, error) => console.log("Error", error)
         );
       });
@@ -145,18 +150,18 @@ function useSQLite() {
 
   const runSQL = () => {
     db.transaction((tx) => {
-      tx.executeSql(
-        "INSERT INTO month values (?, ?)",
-        [1686129308 * 1000 - 86400000, 250],
-        (txObj, { rows: { _array } }) => console.log({ data: _array }),
-        (txObj, error) => console.log("Error", error)
-      );
       // tx.executeSql(
-      //   "SELECT * FROM month",
-      //   null,
+      //   "INSERT INTO month values (?, ?)",
+      //   [1686129308 * 1000 - 86400000, 250],
       //   (txObj, { rows: { _array } }) => console.log({ data: _array }),
       //   (txObj, error) => console.log("Error", error)
       // );
+      tx.executeSql(
+        "DELETE FROM day",
+        null,
+        (txObj, msg) => console.log("Success", msg),
+        (txObj, error) => console.log("Error", error)
+      );
     });
     // console.log(dayData);
   };

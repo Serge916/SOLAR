@@ -27,6 +27,9 @@ export default function Main() {
     console.log(FileSystem.documentDirectory);
   }, []);
 
+  const { addDayData, fetchData, eraseAllData, dayData, monthData, runSQL } =
+    useSQLite();
+
   const {
     requestPermissions,
     scanForPeripherals,
@@ -35,10 +38,7 @@ export default function Main() {
     connectedDevice,
     sensorValue,
     disconnectFromDevice,
-  } = useBLE();
-
-  const { addDayData, fetchData, eraseAllData, dayData, monthData, runSQL } =
-    useSQLite();
+  } = useBLE(addDayData);
 
   useEffect(() => {
     connectedDevice && addDayData(sensorValue) && console.log("Adding value!");
