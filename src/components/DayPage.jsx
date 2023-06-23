@@ -85,7 +85,7 @@ export default function DayPage({ useSQLite }) {
   return (
     <View style={styles.container}>
       <StyledText header bold style={styles.titleContainer}>
-        Daily report
+        Today's exposure
       </StyledText>
       <View style={styles.lineContainer}>
         <LineChart

@@ -88,11 +88,11 @@ export default function Settings({ useSQLite, useBLE }) {
           Disconnect from Device
         </StyledText>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.87} onPress={() => runSQL()}>
+      {/* <TouchableOpacity activeOpacity={0.87} onPress={() => runSQL()}>
         <StyledText bold large style={styles.button}>
           Run SQLite sentence
         </StyledText>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

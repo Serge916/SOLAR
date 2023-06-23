@@ -95,7 +95,7 @@ export default function MonthPage({ useSQLite }) {
   return (
     <View style={styles.mainContainer}>
       <StyledText bold header style={styles.title}>
-        Monthly report
+        Month report
       </StyledText>
       <View style={styles.innerContainer}>
         <StyledText

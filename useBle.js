@@ -12,6 +12,9 @@ import * as ExpoDevice from "expo-device";
 
 import base64 from "react-native-base64";
 
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["new NativeEventEmitter"]); // Ignore log notification by message
+
 // const SERVICE_UUID = "4FAFC201-1FB5-459E-8FCC-C5C9C331914B";
 const SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"; // UART service UUID
 const CHARACTERISTIC_CUSTOM = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
@@ -162,7 +165,6 @@ function useBLE(addDayData) {
     } else {
       console.log("No Device Connected");
     }
-
     useEffect(() => {
       openModal();
     }, []);

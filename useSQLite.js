@@ -74,7 +74,7 @@ function useSQLite() {
     let totalValue = 0;
     let flag =
       (lastUpdate.data[0] === undefined ? false : true) &&
-      (rightNow - new Date(lastUpdate.data[0].timeStamp) > 86400000
+      (rightNow - new Date(lastUpdate.data[0].timeStamp).getTime() > 86400000
         ? false
         : true); //Flag indicates if day should be updated
     //24*60*60*1000 ms in a day
@@ -83,37 +83,41 @@ function useSQLite() {
         totalValue += day.value;
       });
       console.log("UPDATING MONTH");
-      db.transaction((tx) => {
-        tx.executeSql(
-          "INSERT INTO month values (?,?)",
-          [rightNow.getTime() - 86400000, totalValue],
-          (txObj, msg) => console.log("Success", msg),
-          (txObj, error) => console.log("Error", error)
-        );
-        //Delete the whole table to avoid buggy situations
-        tx.executeSql(
-          "DELETE FROM updateRecord",
-          null,
-          (txObj, msg) => console.log("Success", msg),
-          (txObj, error) => console.log("Error", error)
-        );
-        //Insert the time of last update
-        tx.executeSql(
-          "INSERT INTO updateRecord values (?)",
-          [rightNow.getTime()],
-          (txObj, msg) => {
-            setLastUpdate({ data: [{ timeStamp: rightNow.getTime() }] });
-            console.log("Success", msg);
-          },
-          (txObj, error) => console.log("Error", error)
-        );
-        tx.executeSql(
-          "DELETE FROM day",
-          null,
-          (txObj, msg) => console.log("Successfully erased day table!", msg),
-          (txObj, error) => console.log("Error", error)
-        );
-      });
+      try {
+        db.transaction((tx) => {
+          tx.executeSql(
+            "INSERT INTO month values (?,?)",
+            [rightNow - 86400000, totalValue],
+            (txObj, msg) => console.log("Success adding month data.", msg),
+            (txObj, error) => console.log("Error adding month data", error)
+          );
+          // Delete the whole table to avoid buggy situations
+          tx.executeSql(
+            "DELETE FROM updateRecord",
+            null,
+            (txObj, msg) => console.log("Success deleting updateRecord.", msg),
+            (txObj, error) => console.log("Error deleting updateRecord.", error)
+          );
+          //Insert the time of last update
+          tx.executeSql(
+            "INSERT INTO updateRecord values (?)",
+            [rightNow],
+            (txObj, msg) => {
+              setLastUpdate({ data: [{ timeStamp: rightNow }] });
+              console.log("Success", msg);
+            },
+            (txObj, error) => console.log("Error", error)
+          );
+          tx.executeSql(
+            "DELETE FROM day",
+            null,
+            (txObj, msg) => console.log("Successfully erased day table!", msg),
+            (txObj, error) => console.log("Error", error)
+          );
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -123,8 +127,8 @@ function useSQLite() {
       tx.executeSql(
         "INSERT INTO day values (?, ?)",
         [(Date.now() / 1000).toFixed(0), reading],
-        (txObj, msg) => console.log("Success", msg),
-        (txObj, error) => console.log("Error", error)
+        (txObj, msg) => console.log("Success adding day data.", msg),
+        (txObj, error) => console.log("Error adding day data.", error)
       );
     });
     fetchData();
@@ -136,14 +140,20 @@ function useSQLite() {
       tx.executeSql(
         "DELETE FROM day",
         null,
-        (txObj, msg) => console.log("Success", msg),
-        (txObj, error) => console.log("Error", error)
+        (txObj, msg) => console.log("Success clearing DayDB.", msg),
+        (txObj, error) => console.log("Error clearing DayDB.", error)
       );
       tx.executeSql(
         "DELETE FROM month",
         null,
-        (txObj, msg) => console.log("Success", msg),
-        (txObj, error) => console.log("Error", error)
+        (txObj, msg) => console.log("Success clearing MonthDB.", msg),
+        (txObj, error) => console.log("Error clearing MonthDB.", error)
+      );
+      tx.executeSql(
+        "DELETE FROM updateRecord",
+        null,
+        (txObj, msg) => console.log("Success clearing updateRecord.", msg),
+        (txObj, error) => console.log("Error clearing updateRecord.", error)
       );
     });
   };
